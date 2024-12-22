@@ -93,7 +93,7 @@
     jack.enable = true;
     alsa.enable = true;
   };
-
+  services.gnome-keyring.enable = true;
   services.openssh.enable = true;
 
   nix = {
