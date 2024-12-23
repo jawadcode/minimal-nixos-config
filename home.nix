@@ -12,6 +12,7 @@ in {
     packages = with pkgs; [
       # Apps
       discord
+      gnome-network-displays
       imv
       nemo
       papers

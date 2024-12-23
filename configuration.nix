@@ -11,10 +11,34 @@
   hardware.enableAllFirmware = true;
   hardware.graphics.enable = true;
 
-  systemd.tpm2.enable = false;
-  services.tlp.enable = true;
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
-  networking.hostName = "ixnay-yoga-510";
+  systemd.tpm2.enable = false;
+
+  services.tlp = {
+    enable = true;
+    settings = {
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+
+      PLATFORM_PROFILE_ON_AC = "performance";
+      PLATFORM_PROFILE_ON_BAT = "low-power";
+
+      CPU_BOOST_ON_AC = 1;
+      CPU_BOOST_ON_BAT = 0;
+
+      CPU_HWP_DYN_BOOST_ON_AC = 1;
+      CPU_HWP_DYN_BOOST_ON_BAT = 0;
+
+      AMDGPU_ABM_LEVEL_ON_AC = 0;
+      AMDGPU_ABM_LEVEL_ON_BAT = 3;
+    };
+  };
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
+
+  networking.hostName = "shitbox";
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/London";
@@ -67,7 +91,10 @@
     enable = true;
     useBabelfish = true;
     shellAbbrs.tree = "lsd --tree";
-    interactiveShellInit = "source (/etc/profiles/per-user/qak/bin/starship init fish --print-full-init | psub)";
+    interactiveShellInit = ''
+      fish_vi_key_bindings
+      source (/etc/profiles/per-user/qak/bin/starship init fish --print-full-init | psub)
+    '';
     shellInit = "nix-your-shell fish | source";
   };
 
@@ -93,7 +120,8 @@
     jack.enable = true;
     alsa.enable = true;
   };
-  services.gnome-keyring.enable = true;
+
+  services.gnome.gnome-keyring.enable = true;
   services.openssh.enable = true;
 
   nix = {
